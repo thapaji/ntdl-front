@@ -5,22 +5,43 @@ import { Table } from "./components/Table";
 import { Title } from "./components/Title";
 import { fetchFromAPI } from "./helpers/axiosHelper";
 
-const ttHrPerWk = 24*7;
+const ttHrPerWk = 24 * 7;
 function App() {
   const [entryList, setEntryList] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // const list =  fetchFromAPI();
     // console.log(':::::::::::::::::::::::::::::::',list);
-    setEntryList(fetchFromAPI());
 
-  },entryList);
-  
- 
+    const loadList = async () => {
+      setEntryList(await fetchFromAPI());
+    };
+    loadList();
+    console.log(entryList);
+  }, []);
+
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const apiUrl = isHome
+  //       ? "/api/jobs/?_limit=3"
+  //       : "/api/jobs/";
+
+  //     try {
+  //       const res = await fetch(apiUrl);
+  //       const data = await res.json();
+  //       setJobs(data);
+  //     } catch (error) {
+  //       console.log("error fetching data", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchJobs();
+  // }, []);
 
   const addNewTask = (taskObj) => {
-    if(ttlHr+taskObj.hr > ttHrPerWk){
-      return alert('Sorry Boss Not enough Hours left to add!!!!!!!');
+    if (ttlHr + taskObj.hr > ttHrPerWk) {
+      return alert("Sorry Boss Not enough Hours left to add!!!!!!!");
     }
     setEntryList([...entryList, taskObj]);
   };
@@ -39,6 +60,8 @@ function App() {
       setEntryList(entryList.filter((item) => item.id !== id));
     }
   };
+
+  
   const ttlHr = entryList.reduce((acc, item) => {
     return acc + item.hr;
   }, 0);
