@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Form } from "./components/Form";
 import { Table } from "./components/Table";
 import { Title } from "./components/Title";
+import { fetchFromAPI } from "./helpers/axiosHelper";
 
 const ttHrPerWk = 24*7;
 function App() {
   const [entryList, setEntryList] = useState([]);
+
+  useEffect(()=>{
+    // const list =  fetchFromAPI();
+    // console.log(':::::::::::::::::::::::::::::::',list);
+    setEntryList(fetchFromAPI());
+
+  },entryList);
+  
+ 
 
   const addNewTask = (taskObj) => {
     if(ttlHr+taskObj.hr > ttHrPerWk){
