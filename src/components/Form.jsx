@@ -20,7 +20,7 @@ export const Form = ({ addNewTask }) => {
     e.preventDefault();
     const obj = {
       ...form,
-      id: randomIdGenerator(),
+      // id: randomIdGenerator(),
     };
 
     addNewTask(obj);

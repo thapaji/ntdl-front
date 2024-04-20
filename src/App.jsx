@@ -3,21 +3,24 @@ import "./App.css";
 import { Form } from "./components/Form";
 import { Table } from "./components/Table";
 import { Title } from "./components/Title";
-import { fetchFromAPI } from "./helpers/axiosHelper";
+import { fetchFromAPI, insertIntoAPI, updateIntoAPI, deleteIntoAPI } from "./helpers/axiosHelper";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ttHrPerWk = 24 * 7;
 function App() {
   const [entryList, setEntryList] = useState([]);
 
+  const loadList = async () => {
+    setEntryList(await fetchFromAPI());
+  };
+
   useEffect(() => {
     // const list =  fetchFromAPI();
     // console.log(':::::::::::::::::::::::::::::::',list);
 
-    const loadList = async () => {
-      setEntryList(await fetchFromAPI());
-    };
     loadList();
-    console.log(entryList);
+    // console.log(entryList);
   }, []);
 
   // useEffect(() => {
@@ -43,25 +46,31 @@ function App() {
     if (ttlHr + taskObj.hr > ttHrPerWk) {
       return alert("Sorry Boss Not enough Hours left to add!!!!!!!");
     }
-    setEntryList([...entryList, taskObj]);
+    // setEntryList([...entryList, taskObj]);
+    const msg = insertIntoAPI(taskObj);
+    loadList();
   };
 
   const switchTask = (id, type) => {
-    const tempArg = entryList.map((item) => {
-      if (item.id === id) item.type = type;
+    // const tempArg = entryList.map((item) => {
+    //   if (item.id === id) item.type = type;
 
-      return item;
-    });
-    setEntryList(tempArg);
+    //   return item;
+    // });
+    // setEntryList(tempArg);
+
+    updateIntoAPI(id, type);
+    loadList();
   };
 
   const handOnDelete = (id) => {
-    if (window.confirm("Are you sure, you want to delete the item?")) {
-      setEntryList(entryList.filter((item) => item.id !== id));
-    }
+    // if (window.confirm("Are you sure, you want to delete the item?")) {
+    //   setEntryList(entryList.filter((item) => item.id !== id));
+    // }
+    deleteIntoAPI(id);
+    loadList();
   };
 
-  
   const ttlHr = entryList.reduce((acc, item) => {
     return acc + item.hr;
   }, 0);
@@ -80,6 +89,7 @@ function App() {
           Total hrs per week allocated = <span id="totalHr">{ttlHr}</span>hr
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

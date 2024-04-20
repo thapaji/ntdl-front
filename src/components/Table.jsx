@@ -1,8 +1,7 @@
 import React from "react";
 
 export const Table = ({ entryList, switchTask, handOnDelete }) => {
-  console.log(entryList);
-
+  // console.log(entryList);
   const entries = entryList.filter((item) => item.type === "entry");
   const badList = entryList.filter((item) => item.type === "bad");
   return (
@@ -19,14 +18,11 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
                 <td>{item.task}</td>
                 <td>{item.hr}hrs</td>
                 <td className="text-end">
-                  <button
-                    onClick={() => handOnDelete(item.id)}
-                    className="btn btn-danger btn-sm"
-                  >
+                  <button onClick={() => handOnDelete(item._id)} className="btn btn-danger btn-sm">
                     <i className="fa-solid fa-trash"></i>
                   </button>
                   <button
-                    onClick={() => switchTask(item.id, "bad")}
+                    onClick={() => switchTask(item._id, "bad")}
                     className="btn btn-success btn-sm"
                   >
                     <i className="fa-sharp fa-solid fa-arrow-right-long"></i>
@@ -51,15 +47,12 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
                 <td>{item.hr}hrs</td>
                 <td className="text-end">
                   <button
-                    onClick={() => switchTask(item.id, "entry")}
+                    onClick={() => switchTask(item._id, "entry")}
                     className="btn btn-warning btn-sm"
                   >
                     <i className="fa-sharp fa-solid fa-arrow-left-long"></i>
                   </button>
-                  <button
-                    onClick={() => handOnDelete(item.id)}
-                    className="btn btn-danger btn-sm"
-                  >
+                  <button onClick={() => handOnDelete(item._id)} className="btn btn-danger btn-sm">
                     <i className="fa-solid fa-trash"></i>
                   </button>
                 </td>
@@ -68,7 +61,8 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
           </tbody>
         </table>
         <div className="alert alert-info">
-          You could have save = <span id="badHr">{badList.reduce((acc,item)=>acc+item.hr,0)}</span>hr
+          You could have save ={" "}
+          <span id="badHr">{badList.reduce((acc, item) => acc + item.hr, 0)}</span>hr
         </div>
       </div>
     </div>
