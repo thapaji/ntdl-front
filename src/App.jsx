@@ -15,13 +15,14 @@ function App() {
     setEntryList(await fetchFromAPI());
   };
 
-  useEffect(() => {
-    // const list =  fetchFromAPI();
-    // console.log(':::::::::::::::::::::::::::::::',list);
+  loadList();
+  // useEffect(() => {
+  //   // const list =  fetchFromAPI();
+  //   // console.log(':::::::::::::::::::::::::::::::',list);
 
-    loadList();
-    // console.log(entryList);
-  }, []);
+  //   loadList();
+  //   // console.log(entryList);
+  // }, []);
 
   // useEffect(() => {
   //   const fetch = async () => {
