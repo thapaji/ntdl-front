@@ -10,86 +10,33 @@ import "react-toastify/dist/ReactToastify.css";
 const ttHrPerWk = 24 * 7;
 function App() {
   const [entryList, setEntryList] = useState([]);
+  const [ttlHr, setTtlHr] = useState(0);
 
-  const loadList = async () => {
-    setEntryList(await fetchFromAPI());
-  };
-
-  loadList();
-  // useEffect(() => {
-  //   // const list =  fetchFromAPI();
-  //   // console.log(':::::::::::::::::::::::::::::::',list);
-
-  //   loadList();
-  //   // console.log(entryList);
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     const apiUrl = isHome
-  //       ? "/api/jobs/?_limit=3"
-  //       : "/api/jobs/";
-
-  //     try {
-  //       const res = await fetch(apiUrl);
-  //       const data = await res.json();
-  //       setJobs(data);
-  //     } catch (error) {
-  //       console.log("error fetching data", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchJobs();
-  // }, []);
-
-  const addNewTask = (taskObj) => {
-    if (ttlHr + taskObj.hr > ttHrPerWk) {
-      return alert("Sorry Boss Not enough Hours left to add!!!!!!!");
-    }
-    // setEntryList([...entryList, taskObj]);
-    const msg = insertIntoAPI(taskObj);
-    loadList();
-  };
+  useEffect(() => {
+    fetchFromAPI(setEntryList, setTtlHr);
+  }, []);
 
   const switchTask = (id, type) => {
-    // const tempArg = entryList.map((item) => {
-    //   if (item.id === id) item.type = type;
-
-    //   return item;
-    // });
-    // setEntryList(tempArg);
-
-    updateIntoAPI(id, type);
-    loadList();
+    updateIntoAPI(id, type, setEntryList, setTtlHr);
   };
 
   const handOnDelete = (id) => {
-    // if (window.confirm("Are you sure, you want to delete the item?")) {
-    //   setEntryList(entryList.filter((item) => item.id !== id));
-    // }
-    deleteIntoAPI(id);
-    loadList();
+    deleteIntoAPI(id, setEntryList, setTtlHr);
   };
-
-  const ttlHr = entryList.reduce((acc, item) => {
-    return acc + item.hr;
-  }, 0);
 
   return (
     <div className="wrapper">
       <div className="container">
         <Title />
-
-        <Form addNewTask={addNewTask} />
-
+        <Form setEntryList={setEntryList} setTtlHr={setTtlHr} />
         <Table entryList={entryList} switchTask={switchTask} handOnDelete={handOnDelete} />
 
-        {/* <!-- toat time allocated --> */}
         <div className="alert alert-info">
-          Total hrs per week allocated = <span id="totalHr">{ttlHr}</span>hr
+          Total hrs per week allocated = {ttlHr}
+          <span id="totalHr"></span>hr
         </div>
       </div>
+
       <ToastContainer />
     </div>
   );

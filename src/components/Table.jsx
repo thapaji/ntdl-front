@@ -2,8 +2,8 @@ import React from "react";
 
 export const Table = ({ entryList, switchTask, handOnDelete }) => {
   // console.log(entryList);
-  const entries = entryList.filter((item) => item.type === "entry");
-  const badList = entryList.filter((item) => item.type === "bad");
+  const entries = entryList?.filter((item) => item.type === "entry");
+  const badList = entryList?.filter((item) => item.type === "bad");
   return (
     <div className="row mt-5 pt-2">
       {/* <!-- 1. entry list --> */}
@@ -34,7 +34,6 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
         </table>
       </div>
 
-      {/* <!-- 2. bad list  --> */}
       <div className="col-md">
         <h3 className="text-center">Bad List</h3>
         <hr />

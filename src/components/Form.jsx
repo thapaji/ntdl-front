@@ -1,49 +1,32 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { insertIntoAPI } from "../helpers/axiosHelper";
 
-export const Form = ({ addNewTask }) => {
-  //local state
+export const Form = ({ setEntryList, setTtlHr }) => {
   const [form, setForm] = useState({
     type: "entry",
   });
 
-  // create a function that receives the form data and updates to the local state
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: name ==='hr'?+value:value,
+      [name]: name === "hr" ? +value : value,
     });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const obj = {
       ...form,
-      // id: randomIdGenerator(),
     };
-
-    addNewTask(obj);
-  };
-
-  const randomIdGenerator = () => {
-    const idLength = 6;
-    const str =
-      "qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM1234567890";
-
-    let id = "";
-    for (let i = 0; i < idLength; i++) {
-      const randomPosition = Math.floor(Math.random() * str.length);
-      id += str[randomPosition];
+    const result = insertIntoAPI(obj, setEntryList, setTtlHr);
+    if (result.status === "Success") {
+      // reset the form
     }
-    return id;
   };
 
   return (
-    <form
-      onSubmit={handleOnSubmit}
-      className="mt-5 border p-5 rounded shadow-lg bg-transparent"
-    >
+    <form onSubmit={handleOnSubmit} className="mt-5 border p-5 rounded shadow-lg bg-transparent">
       <div className="row g-2">
         <div className="col-md-6">
           <input
@@ -53,7 +36,6 @@ export const Form = ({ addNewTask }) => {
             aria-label="First name"
             name="task"
             required
-            // call the fuction on onchange event of the inputfield
             onChange={handleOnChange}
           />
         </div>
