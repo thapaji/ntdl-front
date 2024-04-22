@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { insertIntoAPI } from "../helpers/axiosHelper";
 
 export const Form = ({ setEntryList, setTtlHr }) => {
-  const [form, setForm] = useState({
-    type: "entry",
-  });
+  const initialState = { task: "", hr: "", type: "entry" };
+  const [form, setForm] = useState(initialState);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -20,8 +19,9 @@ export const Form = ({ setEntryList, setTtlHr }) => {
       ...form,
     };
     const result = insertIntoAPI(obj, setEntryList, setTtlHr);
-    if (result.status === "Success") {
-      // reset the form
+
+    if (result.status === "success") {
+      setForm(initialState);
     }
   };
 
@@ -37,6 +37,7 @@ export const Form = ({ setEntryList, setTtlHr }) => {
             name="task"
             required
             onChange={handleOnChange}
+            value={form.task}
           />
         </div>
         <div className="col-md-3">
@@ -49,6 +50,7 @@ export const Form = ({ setEntryList, setTtlHr }) => {
             name="hr"
             required
             onChange={handleOnChange}
+            value={form.hr}
           />
         </div>
         <div className="col-md-3">
