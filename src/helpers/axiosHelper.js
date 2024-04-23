@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const apiUrl = const apiUrl = import.meta.env.API_URL + "/api/v1/tasks";
+const apiUrl =  import.meta.env.API_URL + "/api/v1/tasks";
 
 /***********     Read Data    ************/
 export const fetchFromAPI = async (setEntryList, setTtlHr) => {
