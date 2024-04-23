@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { insertIntoAPI } from "../helpers/axiosHelper";
+import { toast } from "react-toastify";
 
-export const Form = ({ setEntryList, setTtlHr }) => {
+const ttHrPerWk = 24 * 7;
+
+export const Form = ({ setEntryList, setTtlHr, ttlHr }) => {
   const initialState = { task: "", hr: "", type: "entry" };
   const [form, setForm] = useState(initialState);
 
@@ -18,6 +21,10 @@ export const Form = ({ setEntryList, setTtlHr }) => {
     const obj = {
       ...form,
     };
+    if (ttlHr + obj.hr > ttHrPerWk) {
+      setForm(initialState);
+      return toast.error("Not enough hours to add !!!!!");
+    }
     const result = insertIntoAPI(obj, setEntryList, setTtlHr);
 
     if (result.status === "success") {

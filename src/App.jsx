@@ -3,11 +3,16 @@ import "./App.css";
 import { Form } from "./components/Form";
 import { Table } from "./components/Table";
 import { Title } from "./components/Title";
-import { fetchFromAPI, insertIntoAPI, updateIntoAPI, deleteIntoAPI } from "./helpers/axiosHelper";
+import {
+  fetchFromAPI,
+  insertIntoAPI,
+  updateIntoAPI,
+  deleteIntoAPI,
+  deleteBulkIntoAPI,
+} from "./helpers/axiosHelper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ttHrPerWk = 24 * 7;
 function App() {
   const [entryList, setEntryList] = useState([]);
   const [ttlHr, setTtlHr] = useState(0);
@@ -20,17 +25,18 @@ function App() {
     updateIntoAPI(id, type, setEntryList, setTtlHr);
   };
 
-  const handOnDelete = (id) => {
-    deleteIntoAPI(id, setEntryList, setTtlHr);
+  const handOnDelete = (idsToDelete) => {
+    // deleteIntoAPI(id, setEntryList, setTtlHr);
+    deleteBulkIntoAPI(idsToDelete, setEntryList, setTtlHr);
+    fetchFromAPI(setEntryList, setTtlHr);
   };
 
   return (
     <div className="wrapper">
       <div className="container">
         <Title />
-        <Form setEntryList={setEntryList} setTtlHr={setTtlHr} />
+        <Form setEntryList={setEntryList} setTtlHr={setTtlHr} ttlHr={ttlHr} />
         <Table entryList={entryList} switchTask={switchTask} handOnDelete={handOnDelete} />
-
         <div className="alert alert-info">
           Total hrs per week allocated = {ttlHr}
           <span id="totalHr"></span>hr
