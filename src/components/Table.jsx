@@ -12,7 +12,6 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
     checked === true
       ? setIdstoDelete([...idsToDelete, value])
       : setIdstoDelete(idsToDelete.filter((_id) => _id !== value));
-
   };
 
   const handleOnSelectAll = (e) => {
@@ -22,7 +21,7 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
       value === "entry" ? entries.map((item) => item._id) : badList.map((item) => item._id);
 
     checked === true
-      ? setIdstoDelete([...idsToDelete, ...ids])
+      ? setIdstoDelete([...new Set([...idsToDelete, ...ids])])
       : setIdstoDelete(idsToDelete.filter((id) => !ids.includes(id)));
   };
 
@@ -100,6 +99,7 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
               id="selectEntryList"
               onChange={handleOnSelectAll}
               value={"entry"}
+              checked={entries.every((item) => idsToDelete.includes(item._id))}
             />
             <label htmlFor="selectEntryList" className="ml-5">
               Select all Entry List
@@ -148,6 +148,7 @@ export const Table = ({ entryList, switchTask, handOnDelete }) => {
               id="selectBadList"
               onChange={handleOnSelectAll}
               value={"bad"}
+              checked={badList.every((item) => idsToDelete.includes(item._id))}
             />
             <label htmlFor="selectBadList" className="ml-5">
               Select all Entry List
